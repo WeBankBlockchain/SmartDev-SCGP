@@ -46,7 +46,8 @@ class Solc {
                 if(solc == null){
                     // first file in the list denotes executable
                     solc = targetFile;
-                    solc.setExecutable(true);
+                    boolean executable = solc.setExecutable(true);
+                    if(!executable) System.out.println("Failed to set executable");
                 }
                 fis.close();;
             }
