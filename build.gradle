@@ -21,5 +21,6 @@ dependencies {
     compile fileTree(dir:'libs',include:['*.jar'])
     compile gradleApi()
     testCompile 'junit:junit:4.12'
-    compile ('org.fisco-bcos.java-sdk:java-sdk:2.6.1')
+    compile 'org.fisco-bcos:solcJ:0.4.25.1'
+    compile ('org.fisco-bcos.java-sdk:java-sdk:2.7.0')
 }

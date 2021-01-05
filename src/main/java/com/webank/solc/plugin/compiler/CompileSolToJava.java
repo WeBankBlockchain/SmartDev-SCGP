@@ -1,11 +1,14 @@
 package com.webank.solc.plugin.compiler;
 
-import com.webank.solc.plugin.cl.SolcjClassLoader;
 import org.apache.commons.io.FileUtils;
 import org.fisco.bcos.sdk.codegen.SolidityContractGenerator;
-
+import org.fisco.solc.compiler.CompilationResult;
+import org.fisco.solc.compiler.SolidityCompiler;
 import java.io.File;
 import java.io.IOException;
+
+import static org.fisco.solc.compiler.SolidityCompiler.Options.*;
+import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
 
 /**
  * @author aaronchu
@@ -14,12 +17,6 @@ import java.io.IOException;
  */
 public class CompileSolToJava {
 
-    private SolidityCompiler solidityCompiler;
-    private SolidityCompiler gmSolidityCompiler;
-    public CompileSolToJava(){
-        this.solidityCompiler = new SolidityCompiler(new Solc(new SolcjClassLoader(Constants.ECC_JAR)));
-        this.gmSolidityCompiler=  new SolidityCompiler(new Solc(new SolcjClassLoader(Constants.GM_JAR)));
-    }
 
     public void compileSolToJava(
             String solName,
@@ -41,15 +38,15 @@ public class CompileSolToJava {
             if(!verifySolfile(solFile, solName)){
                 continue;
             }
-            //ECC compile to bin
-            compileToBinAndBinary(this.solidityCompiler, solFile, abiOutputDir, binOutputDir);
-            //GM compile to bin
-            compileToBinAndBinary(this.gmSolidityCompiler, solFile, abiOutputDir, smbinOutputDir);
+            //Abi and Bin(ecdsa + gm)
+            String contractName = solFile.getName().split("\\.")[0];
+            AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
+            this.saveAbiAndBin(abiAndBin, contractName, abiOutputDir, binOutputDir, smbinOutputDir);
             //Generate java files
-            String contractname = solFile.getName().split("\\.")[0];
-            File abiFile = new File(abiOutputDir,contractname + ".abi");
-            File binFile = new File(binOutputDir,contractname + ".bin");
-            File smbinFile = new File(smbinOutputDir,contractname + ".bin");;
+            File abiFile = new File(abiOutputDir,contractName + ".abi");
+            File binFile = new File(binOutputDir,contractName + ".bin");
+            File smbinFile = new File(smbinOutputDir,contractName + ".bin");;
+
             SolidityContractGenerator scg = new SolidityContractGenerator(binFile, smbinFile, abiFile, javaOutputDir, packageName);
             scg.generateJavaFiles();
         }
@@ -62,18 +59,37 @@ public class CompileSolToJava {
         javaDir.mkdirs();
     }
 
-    private void compileToBinAndBinary(SolidityCompiler solCompiler,File solFile, File abiDir, File binDir) throws IOException{
+    private void saveAbiAndBin(AbiAndBin abiAndBin, String contractname, File abiDir, File binDir, File smbinDir) throws IOException{
+        FileUtils.writeStringToFile(new File(abiDir, contractname + ".abi"), abiAndBin.getAbi());
+        FileUtils.writeStringToFile(new File(binDir ,contractname + ".bin"), abiAndBin.getBin());
+        FileUtils.writeStringToFile(new File(smbinDir ,contractname + ".bin"), abiAndBin.getSmBin());
+    }
+
+    private AbiAndBin compileSolToBinAndAbi(File contractFile) throws
+            IOException {
+        String contractName = contractFile.getName().split("\\.")[0];
+
+        /** ecdsa compile */
         SolidityCompiler.Result res =
-                solCompiler.compileSrc(solFile, false, true, SolidityCompiler.Options.ABI, SolidityCompiler.Options.BIN, SolidityCompiler.Options.INTERFACE, SolidityCompiler.Options.METADATA);
-        if ("".equals(res.output)) {
-            throw new RuntimeException("Compile error: " + res.errors);
+                SolidityCompiler.compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
+        if (res.isFailed() || "".equals(res.getOutput())) {
+            System.out.println(" Compile error: " + res.getErrors());
+            return null;
         }
-        CompilationResult result = CompilationResult.parse(res.output);
-        String contractname = solFile.getName().split("\\.")[0];
-        CompilationResult.ContractMetadata a =
-                result.getContract(solFile.getName().split("\\.")[0]);
-        FileUtils.writeStringToFile(new File(abiDir, contractname + ".abi"), a.abi);
-        FileUtils.writeStringToFile(new File(binDir ,contractname + ".bin"), a.bin);
+
+        /** sm compile */
+        SolidityCompiler.Result smRes =
+                SolidityCompiler.compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
+        if (smRes.isFailed() || "".equals(smRes.getOutput())) {
+            System.out.println(" Compile SM error: " + smRes.getErrors());
+        }
+
+        CompilationResult result = CompilationResult.parse(res.getOutput());
+        CompilationResult smResult = CompilationResult.parse(smRes.getOutput());
+
+        CompilationResult.ContractMetadata meta = result.getContract(contractName);
+        CompilationResult.ContractMetadata smMeta = smResult.getContract(contractName);
+        return new AbiAndBin(meta.abi, meta.bin, smMeta.bin);
     }
 
     private boolean verifySolfile(File solFile, String solName){
