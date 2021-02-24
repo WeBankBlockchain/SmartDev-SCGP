@@ -46,8 +46,8 @@ public class CompileTask extends DefaultTask {
         File outputBaseDir = new File(getProject().getProjectDir(), extensions.getOutput());//src/main
         String packageName = extensions.getPkg();
         File abiOutputDir = new File(outputBaseDir, "abi");
-        File binOutputDir = new File(outputBaseDir, "bin");
-        File smbinOutputDir = new File(outputBaseDir, "smbin");
+        File binOutputDir = new File(outputBaseDir, "bin/ecc");
+        File smbinOutputDir = new File(outputBaseDir, "bin/sm");
         File javaOutputDir = new File(outputBaseDir, "java");
 
 
