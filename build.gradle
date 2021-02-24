@@ -33,7 +33,7 @@ jar {
     destinationDir file('dist')
 }
 
-
+/*
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -50,12 +50,12 @@ uploadArchives {
                 packaging 'pom'
                 description 'TOOLKIT SCGP'
                 url 'https://github.com/WeBankBlockchain/Toolkit-SCGP'
-                /*
+
 				scm {
 					url 'https://github.com/FISCO-BCOS/web3sdk.git'
 					connection 'https://github.com/FISCO-BCOS/web3sdk.git'
 				}
-                */
+
 
                 licenses {
                     license {
@@ -74,3 +74,4 @@ uploadArchives {
         }
     }
 }
+ */
