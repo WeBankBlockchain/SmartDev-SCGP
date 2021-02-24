@@ -1,6 +1,9 @@
-apply plugin: 'maven'
-apply plugin: 'java'
-apply plugin: 'maven-publish'
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'maven'
+    id 'signing'
+}
 
 group 'com.webank'
 version '1.0.0-SNAPSHOT'
@@ -21,36 +24,38 @@ dependencies {
     compile 'org.fisco-bcos:solcJ:0.4.25.1'
     compile ('org.fisco-bcos.java-sdk:java-sdk:2.7.0')
 }
+artifacts {
+    archives jar
+    pom()
+}
 
-publishing {
+jar {
+    destinationDir file('dist')
+}
+
+
+uploadArchives {
     repositories {
-        maven {
-            name = "snapshot"
-            url = "https://oss.sonatype.org/content/repositories/snapshots"
-            credentials {
-                username = sonatypeUsername
-                password = sonatypePassword
+        mavenDeployer {
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
-        }
-    }
 
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = 'com.webank'
-            artifactId = 'solc-gradle-plugin'
-            from components.java
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
 
-            pom {
-                name = 'solc-gradle-plugin'
-                description = 'Toolkit SCGP'
-                url = 'https://github.com/WeBankBlockchain/Toolkit-SCGP'
+            pom.project {
+                name project.name
+                packaging 'pom'
+                description 'TOOLKIT SCGP'
+                url 'https://github.com/WeBankBlockchain/Toolkit-SCGP'
                 /*
-                scm {
-                    url 'https://github.com/WeBankBlockchain/Toolkit-SCGP.git'
-                    connection  'https://github.com/WeBankBlockchain/Toolkit-SCGP.git'
-                }
-
-
+				scm {
+					url 'https://github.com/FISCO-BCOS/web3sdk.git'
+					connection 'https://github.com/FISCO-BCOS/web3sdk.git'
+				}
+                */
 
                 licenses {
                     license {
@@ -58,8 +63,6 @@ publishing {
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-
-
                 developers {
                     developer {
                         id 'aaron'
@@ -67,9 +70,6 @@ publishing {
                         email 'aaronchu@webank.com'
                     }
                 }
-                
-                 */
-
             }
         }
     }
