@@ -3,6 +3,9 @@
 .idea/
 out/
 target/
+dist/
+*.gpg
+*.properties
 # Ignore Gradle GUI config
 gradle-app.setting
 
