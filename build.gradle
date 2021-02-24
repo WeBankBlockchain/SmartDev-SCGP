@@ -57,7 +57,7 @@ jar {
         }
     }
 }
-
+/*
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -100,4 +100,4 @@ uploadArchives {
         }
     }
 }
-
+*/
