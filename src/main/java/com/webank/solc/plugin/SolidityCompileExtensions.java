@@ -7,7 +7,7 @@ package com.webank.solc.plugin;
  */
 public class SolidityCompileExtensions {
 
-    //Required
+    //Not Required
     private String pkg;
 
     //Not required
