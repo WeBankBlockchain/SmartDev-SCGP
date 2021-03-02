@@ -48,11 +48,10 @@ public class CompileTask extends DefaultTask {
         File abiOutputDir = new File(outputBaseDir, "abi");
         File binOutputDir = new File(outputBaseDir, "bin/ecc");
         File smbinOutputDir = new File(outputBaseDir, "bin/sm");
-        File javaOutputDir = new File(outputBaseDir, "java");
-
+        File javaOutputDir = extensions.isOnlyAbiBin()?null:new File(outputBaseDir, "java");
 
         solToJava.compileSolToJava("*", packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
 
-        System.out.println("Solidity contracts compile complete to " + javaOutputDir);
+        System.out.println("Solidity contracts compile complete ");
     }
 }

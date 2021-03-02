@@ -6,6 +6,8 @@ import org.fisco.solc.compiler.CompilationResult;
 import org.fisco.solc.compiler.SolidityCompiler;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.fisco.solc.compiler.SolidityCompiler.Options.*;
 import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
@@ -17,7 +19,6 @@ import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
  */
 public class CompileSolToJava {
 
-
     public void compileSolToJava(
             String solName,
             String packageName,
@@ -25,7 +26,8 @@ public class CompileSolToJava {
             File abiOutputDir,
             File binOutputDir,
             File smbinOutputDir,
-            File javaOutputDir)
+            File javaOutputDir
+            )
             throws Exception {
         preConditions(abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
         File[] solFiles = solFileList.listFiles();
@@ -33,6 +35,7 @@ public class CompileSolToJava {
             System.out.println("The contracts directory is empty.");
             return;
         }
+        Map<String, AbiAndBin> result = new HashMap<>();
         for (File solFile : solFiles) {
             //Verify
             if(!verifySolfile(solFile, solName)){
@@ -41,12 +44,14 @@ public class CompileSolToJava {
             //Abi and Bin(ecdsa + gm)
             String contractName = solFile.getName().split("\\.")[0];
             AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
+            result.put(contractName, abiAndBin);
             this.saveAbiAndBin(abiAndBin, contractName, abiOutputDir, binOutputDir, smbinOutputDir);
-            //Generate java files
+
+            //Java
+            if(javaOutputDir == null) continue;
             File abiFile = new File(abiOutputDir,contractName + ".abi");
             File binFile = new File(binOutputDir,contractName + ".bin");
             File smbinFile = new File(smbinOutputDir,contractName + ".bin");;
-
             SolidityContractGenerator scg = new SolidityContractGenerator(binFile, smbinFile, abiFile, javaOutputDir, packageName);
             scg.generateJavaFiles();
         }
@@ -56,7 +61,9 @@ public class CompileSolToJava {
         abiDir.mkdirs();
         binDir.mkdirs();
         smbinDir.mkdirs();
-        javaDir.mkdirs();
+        if(javaDir != null){
+            javaDir.mkdirs();
+        }
     }
 
     private void saveAbiAndBin(AbiAndBin abiAndBin, String contractname, File abiDir, File binDir, File smbinDir) throws IOException{

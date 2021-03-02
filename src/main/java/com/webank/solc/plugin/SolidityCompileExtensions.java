@@ -13,6 +13,8 @@ public class SolidityCompileExtensions {
     //Not required
     private String output = "src/main";
 
+    private boolean onlyAbiBin = false;
+
     //Not required
     private String contracts = "src/main/contracts";
 
@@ -38,5 +40,13 @@ public class SolidityCompileExtensions {
 
     public void setOutput(String output) {
         this.output = output;
+    }
+
+    public boolean isOnlyAbiBin() {
+        return onlyAbiBin;
+    }
+
+    public void setOnlyAbiBin(boolean onlyAbiBin) {
+        this.onlyAbiBin = onlyAbiBin;
     }
 }
