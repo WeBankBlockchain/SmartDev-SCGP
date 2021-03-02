@@ -50,12 +50,12 @@ uploadArchives {
             pom.project {
                 name project.name
                 packaging 'pom'
-                description 'TOOLKIT SCGP'
-                url 'https://github.com/WeBankBlockchain/Toolkit-SCGP'
+                description 'SmartDev SCGP'
+                url 'https://github.com/WeBankBlockchain/SmartDev-SCGP'
 
 				scm {
-					url 'https://github.com/FISCO-BCOS/web3sdk.git'
-					connection 'https://github.com/FISCO-BCOS/web3sdk.git'
+					url 'https://github.com/WeBankBlockchain/SmartDev-SCGP.git'
+					connection 'https://github.com/WeBankBlockchain/SmartDev-SCGP.git'
 				}
 
 
@@ -76,4 +76,4 @@ uploadArchives {
         }
     }
 }
- */
+*/
