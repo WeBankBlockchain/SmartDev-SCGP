@@ -3,6 +3,7 @@ package com.webank.solc.plugin.task;
 import com.webank.solc.plugin.Cleaner;
 import com.webank.solc.plugin.SolidityCompileExtensions;
 import com.webank.solc.plugin.compiler.CompileSolToJava;
+import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 
@@ -49,7 +50,10 @@ public class CompileTask extends DefaultTask {
         File binOutputDir = new File(outputBaseDir, "bin/ecc");
         File smbinOutputDir = new File(outputBaseDir, "bin/sm");
         File javaOutputDir = extensions.isOnlyAbiBin()?null:new File(outputBaseDir, "java");
-
+        if(!extensions.isOnlyAbiBin() && StringUtils.isBlank(packageName)) {
+            System.out.println("Java package is empty");
+            return;
+        }
         solToJava.compileSolToJava("*", packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
 
         System.out.println("Solidity contracts compile complete ");
