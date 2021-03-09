@@ -35,7 +35,6 @@ public class CompileSolToJava {
             System.out.println("The contracts directory is empty.");
             return;
         }
-        Map<String, AbiAndBin> result = new HashMap<>();
         for (File solFile : solFiles) {
             //Verify
             if(!verifySolfile(solFile, solName)){
@@ -44,9 +43,11 @@ public class CompileSolToJava {
             //Abi and Bin(ecdsa + gm)
             String contractName = solFile.getName().split("\\.")[0];
             AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
-            result.put(contractName, abiAndBin);
+            if(abiAndBin == null){
+                System.out.println(solFile + "compile failed ");
+                continue;
+            }
             this.saveAbiAndBin(abiAndBin, contractName, abiOutputDir, binOutputDir, smbinOutputDir);
-
             //Java
             if(javaOutputDir == null) continue;
             File abiFile = new File(abiOutputDir,contractName + ".abi");
