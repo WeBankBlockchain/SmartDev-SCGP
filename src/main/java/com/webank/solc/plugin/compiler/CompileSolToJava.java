@@ -6,8 +6,6 @@ import org.fisco.solc.compiler.CompilationResult;
 import org.fisco.solc.compiler.SolidityCompiler;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.fisco.solc.compiler.SolidityCompiler.Options.*;
 import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
@@ -44,7 +42,6 @@ public class CompileSolToJava {
             String contractName = solFile.getName().split("\\.")[0];
             AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
             if(abiAndBin == null){
-                System.out.println(solFile + "compile failed ");
                 continue;
             }
             this.saveAbiAndBin(abiAndBin, contractName, abiOutputDir, binOutputDir, smbinOutputDir);
