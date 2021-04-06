@@ -14,7 +14,7 @@
 
 ## 文档
 - [**中文**](https://toolkit-doc.readthedocs.io/zh_CN/latest/docs/WeBankBlockchain-SmartDev-SCGP/index.html)
-- [**快速开始**](https://toolkit-doc.readthedocs.io/zh_CN/latest/docs/WeBankBlockchain-SmartDev-SCGP/intro.html#id3)
+- [**快速开始**](https://toolkit-doc.readthedocs.io/zh_CN/latest/docs/WeBankBlockchain-SmartDev-SCGP/index.html)
 
 ## 贡献代码
 欢迎参与本项目的社区建设：
