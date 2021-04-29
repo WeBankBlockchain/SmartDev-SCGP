@@ -1,6 +1,6 @@
 pragma solidity ^0.4.25;
 
-contract HelloWorld{
+contract HelloWorldV4{
     string name;
 	
     
@@ -15,7 +15,7 @@ contract HelloWorld{
        name = "Hello, World!";
     }
 
-    function get()constant returns(string){
+    function get() constant returns(string){
         return name;
     }
 

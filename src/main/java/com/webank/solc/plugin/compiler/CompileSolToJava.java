@@ -8,6 +8,9 @@ import org.fisco.solc.compiler.CompilationResult;
 import org.fisco.solc.compiler.SolidityCompiler;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.fisco.solc.compiler.SolidityCompiler.Options.*;
 import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
@@ -20,7 +23,7 @@ import static org.fisco.solc.compiler.SolidityCompiler.Options.METADATA;
 public class CompileSolToJava {
 
     public void compileSolToJava(
-            String solName,
+            String solSelector,
             String packageName,
             File solFileList,
             File abiOutputDir,
@@ -38,7 +41,7 @@ public class CompileSolToJava {
         }
         for (File solFile : solFiles) {
             //Verify
-            if(!verifySolfile(solFile, solName)){
+            if(!verifySolfile(solFile, solSelector)){
                 continue;
             }
             //Abi and Bin(ecdsa + gm)
@@ -79,7 +82,7 @@ public class CompileSolToJava {
 
         /** ecdsa compile */
         SolidityCompiler.Result res =
-                SolidityCompiler.compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler(solcVersion).compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
         if (res.isFailed() || "".equals(res.getOutput())) {
             System.out.println(" Compile error: " + res.getErrors());
             return null;
@@ -99,13 +102,19 @@ public class CompileSolToJava {
         return new AbiAndBin(meta.abi, meta.bin, smMeta.bin);
     }
 
-    private boolean verifySolfile(File solFile, String solName){
+    private boolean verifySolfile(File solFile, String solSelector){
         if (!solFile.getName().endsWith(".sol")) {
             return false;
         }
         if (solFile.getName().startsWith("Lib")) {
             return false;
         }
-        return "*".equals(solName) || solFile.getName().equals(solName);
+        if("*".equals(solSelector)){
+            return true;
+        }
+        Set<String> solNames = Arrays.stream(solSelector.split(",|;"))
+                .map(s-> s.endsWith(".sol")?s:s+".sol")
+                .collect(Collectors.toSet());
+        return solNames.contains(solFile.getName());
     }
 }

@@ -16,7 +16,7 @@ public class SolidityCompileExtensions {
     private String version = "v4";
 
     private String contracts = "src/main/contracts";
-
+    private String selector="*";
     public String getContracts() {
         return contracts;
     }
@@ -55,5 +55,13 @@ public class SolidityCompileExtensions {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getSelector() {
+        return selector;
+    }
+
+    public void setSelector(String selector) {
+        this.selector = selector;
     }
 }
