@@ -61,10 +61,10 @@ public class SolcCompileTest {
         extensions.setContracts("src/test/resources");
         extensions.setSelector("*");
         extensions.setOnlyAbiBin(true);
-        extensions.setVersion("v5");
+        extensions.setVersion("v4");
         extensions.setOutput("tmp");
-        extensions.setSelector("HelloWorldV5");
-        new File(projectDir, extensions.getOutput()).exists();
+        extensions.setSelector("HelloWorldV4");
+
         CompileHandler compileHandler = new CompileHandler(projectDir, extensions);
         compileHandler.doSolc();
     }
