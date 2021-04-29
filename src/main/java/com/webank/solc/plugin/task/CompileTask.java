@@ -1,8 +1,9 @@
 package com.webank.solc.plugin.task;
 
 import com.webank.solc.plugin.Cleaner;
-import com.webank.solc.plugin.SolidityCompileExtensions;
+import com.webank.solc.plugin.config.SolidityCompileExtensions;
 import com.webank.solc.plugin.compiler.CompileSolToJava;
+import com.webank.solc.plugin.enums.SolcVersionEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
@@ -54,7 +55,8 @@ public class CompileTask extends DefaultTask {
             System.out.println("Java package is empty");
             return;
         }
-        solToJava.compileSolToJava("*", packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
+        SolcVersionEnum versionEnum = SolcVersionEnum.valueOf(extensions.getVersion().toLowerCase());
+        solToJava.compileSolToJava("*", packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir,versionEnum);
 
         System.out.println("Solidity contracts compile complete ");
     }

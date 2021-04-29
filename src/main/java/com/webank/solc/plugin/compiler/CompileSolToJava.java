@@ -1,5 +1,7 @@
 package com.webank.solc.plugin.compiler;
 
+import com.webank.solc.plugin.enums.SolcVersionEnum;
+import com.webank.solc.plugin.handler.SolcHandler;
 import org.apache.commons.io.FileUtils;
 import org.fisco.bcos.sdk.codegen.SolidityContractGenerator;
 import org.fisco.solc.compiler.CompilationResult;
@@ -24,7 +26,8 @@ public class CompileSolToJava {
             File abiOutputDir,
             File binOutputDir,
             File smbinOutputDir,
-            File javaOutputDir
+            File javaOutputDir,
+            SolcVersionEnum solcVersion
             )
             throws Exception {
         preConditions(abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
@@ -40,7 +43,7 @@ public class CompileSolToJava {
             }
             //Abi and Bin(ecdsa + gm)
             String contractName = solFile.getName().split("\\.")[0];
-            AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
+            AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile, solcVersion);
             if(abiAndBin == null){
                 continue;
             }
@@ -70,7 +73,7 @@ public class CompileSolToJava {
         FileUtils.writeStringToFile(new File(smbinDir ,contractname + ".bin"), abiAndBin.getSmBin());
     }
 
-    private AbiAndBin compileSolToBinAndAbi(File contractFile) throws
+    private AbiAndBin compileSolToBinAndAbi(File contractFile,SolcVersionEnum solcVersion) throws
             IOException {
         String contractName = contractFile.getName().split("\\.")[0];
 
@@ -84,7 +87,7 @@ public class CompileSolToJava {
 
         /** sm compile */
         SolidityCompiler.Result smRes =
-                SolidityCompiler.compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler(solcVersion).compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
         if (smRes.isFailed() || "".equals(smRes.getOutput())) {
             System.out.println(" Compile SM error: " + smRes.getErrors());
         }
