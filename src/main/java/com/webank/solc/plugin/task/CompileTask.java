@@ -1,6 +1,5 @@
 package com.webank.solc.plugin.task;
 
-import com.webank.solc.plugin.Cleaner;
 import com.webank.solc.plugin.config.SolidityCompileExtensions;
 import com.webank.solc.plugin.compiler.CompileSolToJava;
 import com.webank.solc.plugin.enums.SolcVersionEnum;
@@ -23,7 +22,6 @@ public class CompileTask extends DefaultTask {
         try{
             //Now call solc to generate contracts, and get
             doSolc();
-            Cleaner.clean();
         }
         catch (Exception ex){
             System.out.println("Failed" + ex.getMessage());

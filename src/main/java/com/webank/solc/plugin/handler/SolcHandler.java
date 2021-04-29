@@ -23,8 +23,8 @@ public class SolcHandler {
     public static SolidityCompiler buildSolidityCompiler(SolcVersionEnum solcVersion) {
         try{
             SolidityCompiler solidityCompiler = SolidityCompiler.getInstance();
-            Field solcField = SolidityCompiler.class.getField("solc");
-            Field smSolcField = SolidityCompiler.class.getField("sMSolc");
+            Field solcField = SolidityCompiler.class.getDeclaredField("solc");
+            Field smSolcField = SolidityCompiler.class.getDeclaredField("sMSolc");
             solcField.setAccessible(true);
             smSolcField.setAccessible(true);
             solcField.set(solidityCompiler, createSolc(solcVersion, false));
@@ -40,11 +40,11 @@ public class SolcHandler {
     // 问题1：怎么创建——自己扩展，或者用替换大法，得到一个新的，受控制的Solc
     // 问题2：怎么注入——用反射，继承等方式把新的Solc注入到SolidityCompiler即可
     public static Solc createSolc(SolcVersionEnum solcVersion, boolean gm)  throws Exception{
-        Solc solc = new Solc(gm);
+
 
         File solcFile = solcFile(solcVersion, gm);
         solcFile.setExecutable(true);
-
+        Solc solc = new Solc(gm);
         Field field = Solc.class.getDeclaredField("solc");
         field.setAccessible(true);
         field.set(solc, solcFile);
@@ -52,15 +52,21 @@ public class SolcHandler {
     }
 
     private static File solcFile(SolcVersionEnum solcVersion, boolean gm) throws Exception{
-        //1. Load zip file from resources according to  solidity version
-        ZipFile zipFile = getZipFileFromResources(solcVersion);
-        //2. find index file
-        ZipEntry indexFile = findIndexFile(zipFile, gm);
-        //3. read related entries per index file(is this a bad design?)
-        List<ZipEntry> relatedEntries = loadRelatedZipEntry(zipFile, indexFile, gm);
-        //4. copy related files into tmp dir
-        File solcFile = copyEntriesToLocal(zipFile, relatedEntries, solcVersion, gm);
-        return solcFile;
+        ZipFile zipFile = null;
+        try{
+            //1. Load zip file from resources according to  solidity version
+            zipFile = getZipFileFromResources(solcVersion);
+            //2. find index file
+            ZipEntry indexFile = findIndexFile(zipFile, gm);
+            //3. read related entries per index file(is this a bad design?)
+            List<ZipEntry> relatedEntries = loadRelatedZipEntry(zipFile, indexFile, gm);
+            //4. copy related files into tmp dir
+            File solcFile = copyEntriesToLocal(zipFile, relatedEntries, solcVersion, gm);
+            return solcFile;
+        }
+        finally {
+            if(zipFile != null) zipFile.close();
+        }
     }
 
     private static ZipFile getZipFileFromResources(SolcVersionEnum solcVersion)  throws Exception{
@@ -68,6 +74,7 @@ public class SolcHandler {
                 new File(
                         System.getProperty("user.home"),
                         ".fisco/solc" + "/" + solcVersion.getVersion() + "/" + solcVersion.getJarName());
+        if(zipFile.exists()) return new ZipFile(zipFile);//incase multiple processes(cover 80% cases. so no processes lock)
         zipFile.mkdirs();
         zipFile.deleteOnExit();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

@@ -84,7 +84,6 @@ public class CompileSolToJava {
             System.out.println(" Compile error: " + res.getErrors());
             return null;
         }
-
         /** sm compile */
         SolidityCompiler.Result smRes =
                 SolcHandler.buildSolidityCompiler(solcVersion).compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
