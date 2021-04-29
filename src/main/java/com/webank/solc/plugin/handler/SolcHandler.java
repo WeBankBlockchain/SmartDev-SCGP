@@ -37,11 +37,7 @@ public class SolcHandler {
         }
     }
 
-    // 问题1：怎么创建——自己扩展，或者用替换大法，得到一个新的，受控制的Solc
-    // 问题2：怎么注入——用反射，继承等方式把新的Solc注入到SolidityCompiler即可
     public static Solc createSolc(SolcVersionEnum solcVersion, boolean gm)  throws Exception{
-
-
         File solcFile = solcFile(solcVersion, gm);
         solcFile.setExecutable(true);
         Solc solc = new Solc(gm);
