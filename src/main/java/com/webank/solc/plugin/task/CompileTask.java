@@ -1,8 +1,6 @@
 package com.webank.solc.plugin.task;
 
 import com.webank.solc.plugin.config.SolidityCompileExtensions;
-import com.webank.solc.plugin.compiler.CompileSolToJava;
-import com.webank.solc.plugin.enums.SolcVersionEnum;
 import com.webank.solc.plugin.handler.CompileHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;

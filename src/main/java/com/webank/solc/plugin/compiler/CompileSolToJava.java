@@ -1,6 +1,5 @@
 package com.webank.solc.plugin.compiler;
 
-import com.webank.solc.plugin.enums.SolcVersionEnum;
 import com.webank.solc.plugin.handler.SolcHandler;
 import org.apache.commons.io.FileUtils;
 import org.fisco.bcos.sdk.codegen.SolidityContractGenerator;
@@ -29,8 +28,7 @@ public class CompileSolToJava {
             File abiOutputDir,
             File binOutputDir,
             File smbinOutputDir,
-            File javaOutputDir,
-            SolcVersionEnum solcVersion
+            File javaOutputDir
             )
             throws Exception {
         preConditions(abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
@@ -46,7 +44,7 @@ public class CompileSolToJava {
             }
             //Abi and Bin(ecdsa + gm)
             String contractName = solFile.getName().split("\\.")[0];
-            AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile, solcVersion);
+            AbiAndBin abiAndBin = this.compileSolToBinAndAbi(solFile);
             if(abiAndBin == null){
                 continue;
             }
@@ -76,20 +74,20 @@ public class CompileSolToJava {
         FileUtils.writeStringToFile(new File(smbinDir ,contractname + ".bin"), abiAndBin.getSmBin());
     }
 
-    private AbiAndBin compileSolToBinAndAbi(File contractFile,SolcVersionEnum solcVersion) throws
+    private AbiAndBin compileSolToBinAndAbi(File contractFile) throws
             IOException {
         String contractName = contractFile.getName().split("\\.")[0];
 
         /** ecdsa compile */
         SolidityCompiler.Result res =
-                SolcHandler.buildSolidityCompiler(solcVersion).compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
         if (res.isFailed() || "".equals(res.getOutput())) {
             System.out.println(" Compile error: " + res.getErrors());
             return null;
         }
         /** sm compile */
         SolidityCompiler.Result smRes =
-                SolcHandler.buildSolidityCompiler(solcVersion).compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
         if (smRes.isFailed() || "".equals(smRes.getOutput())) {
             System.out.println(" Compile SM error: " + smRes.getErrors());
         }

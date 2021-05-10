@@ -13,8 +13,6 @@ public class SolidityCompileExtensions {
 
     private boolean onlyAbiBin = false;
 
-    private String version = "v4";
-
     private String contracts = "src/main/contracts";
     private String selector="*";
     public String getContracts() {
@@ -47,14 +45,6 @@ public class SolidityCompileExtensions {
 
     public void setOnlyAbiBin(boolean onlyAbiBin) {
         this.onlyAbiBin = onlyAbiBin;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public String getSelector() {

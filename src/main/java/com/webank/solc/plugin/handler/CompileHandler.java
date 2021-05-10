@@ -2,7 +2,6 @@ package com.webank.solc.plugin.handler;
 
 import com.webank.solc.plugin.compiler.CompileSolToJava;
 import com.webank.solc.plugin.config.SolidityCompileExtensions;
-import com.webank.solc.plugin.enums.SolcVersionEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -43,8 +42,7 @@ public class CompileHandler  {
             System.out.println("Java package is empty");
             return;
         }
-        SolcVersionEnum versionEnum = SolcVersionEnum.valueOf(extensions.getVersion().toLowerCase());
-        solToJava.compileSolToJava(solSelector, packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir,versionEnum);
+        solToJava.compileSolToJava(solSelector, packageName, contractsDir, abiOutputDir, binOutputDir, smbinOutputDir, javaOutputDir);
 
         System.out.println("Solidity contracts compile complete ");
     }
