@@ -107,7 +107,7 @@ public class CompileSolToJava {
         if (solFile.getName().startsWith("Lib")) {
             return false;
         }
-        if("*".equals(solSelector)){
+        if(solSelector == null || solSelector.isEmpty()){
             return true;
         }
         Set<String> solNames = Arrays.stream(solSelector.split(",|;"))

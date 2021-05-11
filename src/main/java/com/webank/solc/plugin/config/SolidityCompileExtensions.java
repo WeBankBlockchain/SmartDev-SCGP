@@ -14,7 +14,7 @@ public class SolidityCompileExtensions {
     private boolean onlyAbiBin = false;
 
     private String contracts = "src/main/contracts";
-    private String selector="*";
+    private String selector;
     public String getContracts() {
         return contracts;
     }
