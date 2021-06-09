@@ -1,5 +1,4 @@
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-<a href="#"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/WeBankBlockchain/SmartDev-SCGP/total.svg?style=flat-square"></a>
 
 # 组件介绍
 
