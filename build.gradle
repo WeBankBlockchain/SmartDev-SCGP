@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.webank'
-version '1.0.0-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -22,9 +22,7 @@ dependencies {
     compile gradleApi()
     testCompile 'junit:junit:4.12'
     compile 'org.fisco-bcos:solcJ:0.4.25.1'
-    compile ('org.fisco-bcos.java-sdk:java-sdk:2.7.0'){
-        
-    }
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.7.2')
 }
 artifacts {
     archives jar
