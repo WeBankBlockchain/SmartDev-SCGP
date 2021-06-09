@@ -1,4 +1,4 @@
-package com.webank.solc.plugin;
+package com.webank.solc.plugin.config;
 
 /**
  * @author aaronchu
@@ -7,17 +7,14 @@ package com.webank.solc.plugin;
  */
 public class SolidityCompileExtensions {
 
-    //Not Required
     private String pkg;
 
-    //Not required
     private String output = "src/main";
 
     private boolean onlyAbiBin = false;
 
-    //Not required
     private String contracts = "src/main/contracts";
-
+    private String selector;
     public String getContracts() {
         return contracts;
     }
@@ -48,5 +45,13 @@ public class SolidityCompileExtensions {
 
     public void setOnlyAbiBin(boolean onlyAbiBin) {
         this.onlyAbiBin = onlyAbiBin;
+    }
+
+    public String getSelector() {
+        return selector;
+    }
+
+    public void setSelector(String selector) {
+        this.selector = selector;
     }
 }

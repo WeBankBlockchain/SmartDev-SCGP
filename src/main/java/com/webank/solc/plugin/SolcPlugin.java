@@ -1,5 +1,6 @@
 package com.webank.solc.plugin;
 
+import com.webank.solc.plugin.config.SolidityCompileExtensions;
 import com.webank.solc.plugin.task.CompileTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

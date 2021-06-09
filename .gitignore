@@ -4,6 +4,7 @@
 out/
 target/
 dist/
+tmp/
 *.gpg
 *.properties
 # Ignore Gradle GUI config
