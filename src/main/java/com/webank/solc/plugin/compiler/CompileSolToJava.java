@@ -80,14 +80,14 @@ public class CompileSolToJava {
 
         /** ecdsa compile */
         SolidityCompiler.Result res =
-                SolcHandler.buildSolidityCompiler().compile(contractFile, false, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(contractFile, false, true, ABI, BIN, METADATA);
         if (res.isFailed() || "".equals(res.getOutput())) {
             System.out.println(" Compile error: " + res.getErrors());
             return null;
         }
         /** sm compile */
         SolidityCompiler.Result smRes =
-                SolcHandler.buildSolidityCompiler().compile(contractFile, true, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(contractFile, true, true, ABI, BIN, METADATA);
         if (smRes.isFailed() || "".equals(smRes.getOutput())) {
             System.out.println(" Compile SM error: " + smRes.getErrors());
         }

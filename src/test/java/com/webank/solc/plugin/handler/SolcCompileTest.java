@@ -24,9 +24,9 @@ public class SolcCompileTest {
     @Test
     public void testV4() throws Exception{
         SolidityCompiler.Result smRes =
-                SolcHandler.buildSolidityCompiler().compile(helloworld4, true, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(helloworld4, true, true, ABI, BIN, METADATA);
         SolidityCompiler.Result eccRes =
-                SolcHandler.buildSolidityCompiler().compile(helloworld4, false, true, ABI, BIN, INTERFACE, METADATA);
+                SolcHandler.buildSolidityCompiler().compile(helloworld4, false, true, ABI, BIN, METADATA);
         Assert.assertTrue(!smRes.isFailed());
         Assert.assertTrue(!eccRes.isFailed());
     }
