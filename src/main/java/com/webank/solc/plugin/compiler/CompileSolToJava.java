@@ -2,7 +2,7 @@ package com.webank.solc.plugin.compiler;
 
 import com.webank.solc.plugin.handler.SolcHandler;
 import org.apache.commons.io.FileUtils;
-import org.fisco.bcos.sdk.codegen.SolidityContractGenerator;
+import org.fisco.bcos.codegen.v3.wrapper.ContractGenerator;
 import org.fisco.solc.compiler.CompilationResult;
 import org.fisco.solc.compiler.SolidityCompiler;
 import java.io.File;
@@ -54,7 +54,7 @@ public class CompileSolToJava {
             File abiFile = new File(abiOutputDir,contractName + ".abi");
             File binFile = new File(binOutputDir,contractName + ".bin");
             File smbinFile = new File(smbinOutputDir,contractName + ".bin");;
-            SolidityContractGenerator scg = new SolidityContractGenerator(binFile, smbinFile, abiFile, javaOutputDir, packageName);
+            ContractGenerator scg = new ContractGenerator(binFile, smbinFile, abiFile, javaOutputDir, packageName);
             scg.generateJavaFiles();
         }
     }

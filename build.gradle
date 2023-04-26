@@ -22,7 +22,11 @@ dependencies {
     compile gradleApi()
     testCompile 'junit:junit:4.12'
     compile 'org.fisco-bcos:solcJ:0.8.11.0'
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:2.7.2')
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.2.0')
+    compile('org.fisco-bcos.code-generator:bcos-code-generator:1.0.0') {
+        exclude group: "org.fisco-bcos.java-sdk"
+        exclude group: "org.slf4j"
+    }
 }
 artifacts {
     archives jar
