@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.webank'
-version '1.0.1'
+version '3.3.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -22,8 +22,8 @@ dependencies {
     compile gradleApi()
     testCompile 'junit:junit:4.12'
     compile 'org.fisco-bcos:solcJ:0.8.11.0'
-    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.2.0')
-    compile('org.fisco-bcos.code-generator:bcos-code-generator:1.0.0') {
+    compile ('org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:3.3.0')
+    compile('org.fisco-bcos.code-generator:bcos-code-generator:1.1.0') {
         exclude group: "org.fisco-bcos.java-sdk"
         exclude group: "org.slf4j"
     }
@@ -37,7 +37,7 @@ jar {
     destinationDir file('dist')
 }
 
-/*
+
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -78,4 +78,4 @@ uploadArchives {
         }
     }
 }
-*/
+
